@@ -4,6 +4,7 @@
   import { Modal } from "@skeletonlabs/skeleton-svelte";
 
   import AddIndividual from "$lib/components/AddIndividual.svelte";
+  import Chart_com from "$lib/components/Chart_com.svelte";
   import { Stethoscope } from "@lucide/svelte";
 
   //MODAL FUNCTIONS FROM SKELETON UI
@@ -21,6 +22,7 @@
   }
 
   // SAMPLE DATA, LIST OF RANDOMLY GENERATED PERSONS
+
   let data: Person[] = $state([
     { id: 1, name: "Alice", selected: false },
     { id: 2, name: "Bob", selected: false },
@@ -43,6 +45,8 @@
     { id: 19, name: "Sophie", selected: false },
     { id: 20, name: "Tom", selected: false },
   ]);
+
+  //let data: Person[] = $state([]);
 
   let name: string = $state("");
   let newPerson: Person;
@@ -116,16 +120,11 @@
     </header>
     <!--    PIE CHART AND NEWLY SELECTED SECTION -->
     <section class="flex justify-between flex-wrap mt-10">
-      <div
-        class="rounded-full w-[200px] h-[200px]
-          bg-surface-800 flex flex-col justify-center mx-auto"
-      >
-        <h2 class="text-2xl font-bold text-surface-500 text-center">
-          Pie chart place holder
-        </h2>
+      <div class="">
+        <Chart_com />
       </div>
 
-      <div class="w-sm mt-10 sm:mt-0">
+      <div class="w-xs mt-10 sm:mt-0">
         <div class="table-wrap">
           <table class="table caption-bottom">
             <caption class="pt-4"
