@@ -2,13 +2,17 @@
   import Chart from "chart.js/auto";
   import { onMount } from "svelte";
 
+  let { selectedCount, unselectedCount } = $props();
+
+  console.log(selectedCount);
+
   let canvas: HTMLCanvasElement;
 
-  const xValues: string[] = ["Selected", "Unselected"];
-  const yValues: number[] = [10, 34];
-  const barColors: string[] = ["#b91d47", "#00aba9"];
-
   onMount(() => {
+    const xValues: string[] = ["Selected", "Unselected"];
+    let yValues: number[] = [selectedCount, unselectedCount];
+    const barColors: string[] = ["#b91d47", "#00aba9"];
+
     new Chart(canvas, {
       type: "doughnut",
       data: {

@@ -7,7 +7,12 @@
   import Chart_com from "$lib/components/Chart_com.svelte";
   import FilterTabs from "$lib/components/FilterTabs.svelte";
 
-  import { downloadCSV } from "./func.svelte";
+  import {
+    downloadCSV,
+    getDistinctGroups,
+    assignNewDistinctGroup,
+    resetSelection,
+  } from "./func.svelte";
 
   //MODAL FUNCTIONS FROM SKELETON UI
   let openState = $state(false);
@@ -21,6 +26,7 @@
     id: number;
     name: string;
     selected: boolean;
+    group?: string;
   }
 
   // SAMPLE DATA, LIST OF RANDOMLY GENERATED PERSONS
@@ -35,6 +41,13 @@
   let newlySelected: Person[] = $state([]);
   let numFreshSelection: number = $state(0);
 
+  let selectedCount = $derived(
+    peopleData.filter((item) => item.selected).length
+  );
+  let unselectedCount = $derived(peopleData.length - selectedCount);
+
+  let groups: string[] = $state([]);
+
   // FUNCTION TO ADD A NEW INDIVIDUAL TO THE DATA
   const addIndividual = (): void => {
     newPerson = { name: name, selected: false, id: peopleData.length + 1 };
@@ -45,19 +58,19 @@
   // FUNCTION TO ADD MULTIPLE INDIVIDUALS VIA CSV FILE.
   const addIndividuals = (individuals: any): void => {
     peopleData = individuals;
-    console.log($state.snapshot(peopleData));
-
-    //check if a grouping already exists
-    for (let i = 0; i < peopleData.length; i++) {}
+    groups = getDistinctGroups(peopleData);
+    console.log($state.snapshot(groups));
   };
 
   function selectRandomPeople(count: number): void {
+    let groupForSelection = assignNewDistinctGroup(groups); // Group of the current selection
+
     // Filter unselected people
     const unselected = peopleData.filter((p) => !p.selected);
 
     if (unselected.length === 0) {
       // Reset selection if all have been selected
-      peopleData.forEach((p) => (p.selected = false));
+      resetSelection(peopleData, groups);
       return selectRandomPeople(count); // Try again after resetting
     }
     // SELECT THE SMALLER VALUE IF THE LENGTH OF UNSELECTED IS LESS THAN COUNT(no of people to select)
@@ -69,6 +82,10 @@
       const randomIndex = Math.floor(Math.random() * unselected.length);
       const person = unselected.splice(randomIndex, 1)[0];
       person.selected = true;
+      person.group = groupForSelection;
+
+      //Add a group to the person.
+
       selected.push(person);
     }
 
@@ -115,9 +132,11 @@
     </header>
     <!--    PIE CHART AND NEWLY SELECTED SECTION -->
     <section class="flex justify-between flex-wrap mt-10">
-      <div class="">
-        <Chart_com />
-      </div>
+      {#key unselectedCount}
+        <div class="">
+          <Chart_com {selectedCount} {unselectedCount} />
+        </div>
+      {/key}
 
       <div class="w-xs mt-10 sm:mt-0">
         <div class="table-wrap">
@@ -129,6 +148,7 @@
               <tr class="font-">
                 <th>ID</th>
                 <th>Name</th>
+                <th>Group</th>
               </tr>
             </thead>
             <tbody class="[&>tr]:hover:preset-tonal-primary">
@@ -137,6 +157,7 @@
                   <tr>
                     <td>{person.id}</td>
                     <td>{person.name}</td>
+                    <td>{person.group}</td>
                   </tr>
                 {/if}
               {/each}
@@ -170,6 +191,13 @@
       >
         Download Csv File
       </button>
+
+      <button
+        class="btn preset-filled-primary-500"
+        onclick={() => resetSelection(peopleData, groups)}
+      >
+        Reset Selection
+      </button>
     </section>
     <!-- END OF RANDOM SELECTION -->
 
@@ -186,6 +214,7 @@
               <tr class="font-">
                 <th>ID</th>
                 <th>Name</th>
+                <th>Group</th>
               </tr>
             </thead>
             <tbody class="[&>tr]:hover:preset-tonal-primary">
@@ -195,6 +224,7 @@
                     <tr>
                       <td>{person.id}</td>
                       <td>{person.name}</td>
+                      <td>{person.group}</td>
                     </tr>
                   {/if}
                 {/each}
@@ -204,6 +234,7 @@
                     <tr>
                       <td>{person.id}</td>
                       <td>{person.name}</td>
+                      <td>{person.group}</td>
                     </tr>
                   {/if}
                 {/each}
@@ -212,6 +243,7 @@
                   <tr class={person.selected ? "bg-secondary-500" : ""}>
                     <td>{person.id}</td>
                     <td>{person.name}</td>
+                    <td>{person.group}</td>
                   </tr>
                 {/each}
               {/if}

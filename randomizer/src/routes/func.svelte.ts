@@ -22,6 +22,15 @@ const data = [
 
 ]
 
+  // INTERFACE FOR PERSON OBJECT
+  interface Person {
+    id: number;
+    name: string;
+    selected: boolean;
+    group?: string;
+  }
+
+
 export function downloadCSV(data: Record<string, any>[], filename: string = 'data.csv'): void {
     if (!data.length) {
       console.warn("No data provided");
@@ -69,6 +78,38 @@ export const downloadCSV = (peopleData: any) =>{
 }
 */
 
-export const printHello = () =>{
-    console.log("hello world!")
+export const getDistinctGroups = (data: Person[]): string[] => {
+    const groups = new Set<string>();
+  
+    data.forEach(person => {
+      if (person.group) {
+        groups.add(person.group);
+      }
+    });
+  
+    return Array.from(groups);
+  }
+
+export const  assignNewDistinctGroup = (existingGroups: string[]): string => {
+    let groupNumber = 1;
+    let newGroup = `g${groupNumber}`;
+  
+    // Increment groupNumber until a distinct group name is found
+    while (existingGroups.includes(newGroup)) {
+      groupNumber += 1;
+      newGroup = `G${groupNumber}`;
+    }
+  
+    // Optionally, add the new group to existing groups to track it
+    existingGroups.push(newGroup);
+  
+    return newGroup;
+  }
+
+export const resetSelection = (peopleData: Person[], group: string[]) =>{
+    for(let i: number = 0; i < peopleData.length; i++){
+        peopleData[i].selected = false
+        peopleData[i].group = "No group"
+    }
+    group = ["No group"]
 }

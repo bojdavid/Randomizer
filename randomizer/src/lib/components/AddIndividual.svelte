@@ -26,6 +26,7 @@
     const idIndex = headers.indexOf(id.toLowerCase());
     const nameIndex = headers.indexOf(name.toLowerCase());
     const selectedIndex = headers.indexOf("selected");
+    const groupIndex = headers.indexOf("groups");
 
     if (idIndex === -1 || nameIndex === -1) {
       console.warn("ID or Name column not found.");
@@ -44,6 +45,10 @@
           selectedIndex !== -1
             ? fields[selectedIndex]?.trim().toLowerCase() === "true"
             : false,
+        group:
+          groupIndex !== -1
+            ? fields[selectedIndex]?.trim().toLowerCase() === "true"
+            : "No group",
       };
     });
 
