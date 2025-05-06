@@ -24,28 +24,7 @@
 
   // SAMPLE DATA, LIST OF RANDOMLY GENERATED PERSONS
 
-  let peopleData: Person[] = $state([
-    { id: 1, name: "Alice", selected: false },
-    { id: 2, name: "Bob", selected: false },
-    { id: 3, name: "Charlie", selected: false },
-    { id: 4, name: "Diana", selected: false },
-    { id: 5, name: "Ethan", selected: false },
-    { id: 6, name: "Fiona", selected: false },
-    { id: 7, name: "George", selected: false },
-    { id: 8, name: "Hannah", selected: false },
-    { id: 9, name: "Ian", selected: false },
-    { id: 10, name: "Jasmine", selected: false },
-    { id: 11, name: "Kyle", selected: false },
-    { id: 12, name: "Luna", selected: false },
-    { id: 13, name: "Mason", selected: false },
-    { id: 14, name: "Nina", selected: false },
-    { id: 15, name: "Oscar", selected: false },
-    { id: 16, name: "Paula", selected: false },
-    { id: 17, name: "Quinn", selected: false },
-    { id: 18, name: "Ryan", selected: false },
-    { id: 19, name: "Sophie", selected: false },
-    { id: 20, name: "Tom", selected: false },
-  ]);
+  let peopleData: Person[] = $state([]);
 
   //let data: Person[] = $state([]);
 
@@ -177,7 +156,7 @@
 
       <button
         class="btn preset-filled-primary-500"
-        onclick={() => downloadCSV(peopleData)}
+        onclick={() => downloadCSV(peopleData, "data.csv")}
       >
         Download Csv File
       </button>
