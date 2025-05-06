@@ -5,7 +5,8 @@
 
   import AddIndividual from "$lib/components/AddIndividual.svelte";
   import Chart_com from "$lib/components/Chart_com.svelte";
-  import { Stethoscope } from "@lucide/svelte";
+
+  import { downloadCSV } from "./func.svelte";
 
   //MODAL FUNCTIONS FROM SKELETON UI
   let openState = $state(false);
@@ -23,7 +24,7 @@
 
   // SAMPLE DATA, LIST OF RANDOMLY GENERATED PERSONS
 
-  let data: Person[] = $state([
+  let peopleData: Person[] = $state([
     { id: 1, name: "Alice", selected: false },
     { id: 2, name: "Bob", selected: false },
     { id: 3, name: "Charlie", selected: false },
@@ -56,23 +57,23 @@
 
   // FUNCTION TO ADD A NEW INDIVIDUAL TO THE DATA
   const addIndividual = (): void => {
-    newPerson = { name: name, selected: false, id: data.length + 1 };
-    data.push(newPerson);
+    newPerson = { name: name, selected: false, id: peopleData.length + 1 };
+    peopleData.push(newPerson);
     modalClose();
   };
 
   // FUNCTION TO ADD MULTIPLE INDIVIDUALS VIA CSV FILE.
   const addIndividuals = (individuals: any): void => {
-    data = individuals;
+    peopleData = individuals;
   };
 
   function selectRandomPeople(count: number): void {
     // Filter unselected people
-    const unselected = data.filter((p) => !p.selected);
+    const unselected = peopleData.filter((p) => !p.selected);
 
     if (unselected.length === 0) {
       // Reset selection if all have been selected
-      data.forEach((p) => (p.selected = false));
+      peopleData.forEach((p) => (p.selected = false));
       return selectRandomPeople(count); // Try again after resetting
     }
     // SELECT THE SMALLER VALUE IF THE LENGTH OF UNSELECTED IS LESS THAN COUNT(no of people to select)
@@ -174,7 +175,12 @@
         class="w-[100px] p-1 border border-secondary-500 rounded-lg"
       />
 
-      <button class="btn preset-filled-primary-500"> Download Csv File </button>
+      <button
+        class="btn preset-filled-primary-500"
+        onclick={() => downloadCSV(peopleData)}
+      >
+        Download Csv File
+      </button>
     </section>
     <!-- END OF RANDOM SELECTION -->
 
@@ -206,7 +212,7 @@
             </thead>
             <tbody class="[&>tr]:hover:preset-tonal-primary">
               {#if active_filter == "Selected"}
-                {#each data as person}
+                {#each peopleData as person}
                   {#if person.selected}
                     <tr>
                       <td>{person.id}</td>
@@ -215,7 +221,7 @@
                   {/if}
                 {/each}
               {:else if active_filter == "Unselected"}
-                {#each data as person}
+                {#each peopleData as person}
                   {#if !person.selected}
                     <tr>
                       <td>{person.id}</td>
@@ -224,7 +230,7 @@
                   {/if}
                 {/each}
               {:else}
-                {#each data as person}
+                {#each peopleData as person}
                   <tr class={person.selected ? "bg-secondary-500" : ""}>
                     <td>{person.id}</td>
                     <td>{person.name}</td>
