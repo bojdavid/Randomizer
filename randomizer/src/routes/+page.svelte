@@ -61,6 +61,11 @@
     modalClose();
   };
 
+  // FUNCTION TO ADD MULTIPLE INDIVIDUALS VIA CSV FILE.
+  const addIndividuals = (individuals: any): void => {
+    data = individuals;
+  };
+
   function selectRandomPeople(count: number): void {
     // Filter unselected people
     const unselected = data.filter((p) => !p.selected);
@@ -114,7 +119,7 @@
           Add Individual
         {/snippet}
         {#snippet content()}
-          <AddIndividual {addIndividual} bind:name />
+          <AddIndividual {addIndividual} bind:name {addIndividuals} />
         {/snippet}
       </Modal>
     </header>
@@ -168,6 +173,8 @@
         bind:value={numFreshSelection}
         class="w-[100px] p-1 border border-secondary-500 rounded-lg"
       />
+
+      <button class="btn preset-filled-primary-500"> Download Csv File </button>
     </section>
     <!-- END OF RANDOM SELECTION -->
 
@@ -218,7 +225,7 @@
                 {/each}
               {:else}
                 {#each data as person}
-                  <tr>
+                  <tr class={person.selected ? "bg-secondary-500" : ""}>
                     <td>{person.id}</td>
                     <td>{person.name}</td>
                   </tr>
