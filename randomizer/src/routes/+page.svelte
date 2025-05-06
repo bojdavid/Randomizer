@@ -5,6 +5,7 @@
 
   import AddIndividual from "$lib/components/AddIndividual.svelte";
   import Chart_com from "$lib/components/Chart_com.svelte";
+  import FilterTabs from "$lib/components/FilterTabs.svelte";
 
   import { downloadCSV } from "./func.svelte";
 
@@ -44,6 +45,10 @@
   // FUNCTION TO ADD MULTIPLE INDIVIDUALS VIA CSV FILE.
   const addIndividuals = (individuals: any): void => {
     peopleData = individuals;
+    console.log($state.snapshot(peopleData));
+
+    //check if a grouping already exists
+    for (let i = 0; i < peopleData.length; i++) {}
   };
 
   function selectRandomPeople(count: number): void {
@@ -92,14 +97,19 @@
         open={openState}
         onOpenChange={(e) => (openState = e.open)}
         triggerBase="btn preset-filled-primary-500"
-        contentBase="card bg-surface-100-900 p-4 space-y-4 shadow-xl max-w-screen-sm"
+        contentBase="card bg-surface-100-900 p-4 space-y-4 shadow-xl max-w-2xl w-full min-w-sm"
         backdropClasses="backdrop-blur-sm"
       >
         {#snippet trigger()}
           Add Individual
         {/snippet}
         {#snippet content()}
-          <AddIndividual {addIndividual} bind:name {addIndividuals} />
+          <AddIndividual
+            {addIndividual}
+            bind:name
+            {addIndividuals}
+            {modalClose}
+          />
         {/snippet}
       </Modal>
     </header>
@@ -165,18 +175,7 @@
 
     <!-- TABLE SECTION-->
     <section class="mt-10">
-      <header class="flex justify-evenly">
-        {#each filter_Tabs as filter}
-          <button
-            class="text-lg font-bold text-primary-500
-                          dark:hover:text-primary-700 hover:text-primary-300
-                          transition duration-400 ease-in-out"
-            onclick={() => changeActiveFilter(filter)}
-          >
-            {filter}
-          </button>
-        {/each}
-      </header>
+      <FilterTabs {changeActiveFilter} {filter_Tabs} {active_filter} />
       <div>
         <div class="table-wrap">
           <table class="table caption-bottom">
