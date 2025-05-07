@@ -129,7 +129,7 @@
               type="text"
               id="name"
               placeholder="Enter Name of Individual"
-              class="w-md border-2 p-2 rounded-xl my-4"
+              class="max-w-md min-w-xs w-full border-2 p-2 rounded-xl my-4"
               bind:value={name}
             />
           </div>

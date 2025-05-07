@@ -108,14 +108,14 @@
   };
 </script>
 
-<main class="mx-5">
+<main class="">
   <div class="mx-auto max-w-2xl w-full min-w-sm">
     <header
       class=" flex justify-between items-center
-              py-4 px-3
+              py-4 px-3 w-full
               bg-surface-100 dark:bg-surface-900"
     >
-      <h1 class="text-4xl font-bold">Randomizer</h1>
+      <h1 class="md:text-4xl text-3xl font-bold">Randomizer</h1>
 
       <div class="flex flex-col gap-3 items-center">
         <LightSwitch />
@@ -123,7 +123,7 @@
           open={openState}
           onOpenChange={(e) => (openState = e.open)}
           triggerBase="btn preset-filled-primary-500"
-          contentBase="card bg-surface-100-900 p-4 space-y-4 shadow-xl max-w-2xl w-full min-w-sm"
+          contentBase="card bg-surface-100-900 p-4 space-y-4 shadow-xl max-w-2xl w-full min-w-xs"
           backdropClasses="backdrop-blur-sm"
         >
           {#snippet trigger()}
@@ -141,14 +141,14 @@
       </div>
     </header>
     <!--    PIE CHART AND NEWLY SELECTED SECTION -->
-    <section class="flex justify-between flex-wrap mt-10">
+    <section class="flex justify-between mt-10">
       {#key unselectedCount}
         <div class="">
           <Chart_com {selectedCount} {unselectedCount} />
         </div>
       {/key}
 
-      <div class="w-xs mt-10 sm:mt-0">
+      <div class="max-w-sm w-full min-w-[50px] mt-10 sm:mt-0">
         <div class="table-wrap">
           <table class="table caption-bottom">
             <caption class="pt-4"
@@ -179,7 +179,7 @@
     <!-- END OF PIE CHART AND NEWLY SECTION -->
 
     <!-- RANDOM SELECTION SECTION-->
-    <section class="mt-10 flex justify-center gap-4">
+    <section class="mt-10 flex justify-center gap-4 flex-wrap">
       <button
         type="button"
         class="btn preset-filled-primary-500"
@@ -196,14 +196,14 @@
       />
 
       <button
-        class="btn preset-filled-primary-500"
+        class="btn preset-filled-success-500"
         onclick={() => downloadCSV(peopleData, "data.csv")}
       >
         Download Csv File
       </button>
 
       <button
-        class="btn preset-filled-primary-500"
+        class="btn preset-filled-warning-500"
         onclick={() => resetSelection(peopleData, groups)}
       >
         Reset Selection

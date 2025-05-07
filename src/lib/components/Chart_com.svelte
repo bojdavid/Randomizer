@@ -19,16 +19,33 @@
         labels: xValues,
         datasets: [
           {
+            borderWidth: 0,
             backgroundColor: barColors,
             data: yValues,
           },
         ],
       },
-      options: {},
+      options: {
+        plugins: {
+          legend: {
+            position: "top", // place legend at the top
+            align: "start",
+            labels: {
+              boxWidth: 10, // Width of the colored box
+              boxHeight: 10,
+              font: {
+                size: 10, // Change this to reduce/increase label font size
+              },
+            },
+          },
+        },
+      },
     });
   });
 </script>
 
-<div class="h-64 w-full">
+<div
+  class="{unselectedCount == 0 ? 'hidden' : 'sm:h-64 w-full h-30'} align-left"
+>
   <canvas bind:this={canvas}></canvas>
 </div>
