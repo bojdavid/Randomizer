@@ -2,6 +2,7 @@
   import "../lib/styles/app.css";
   import LightSwitch from "$lib/components/LightSwitch.svelte";
   import { Modal } from "@skeletonlabs/skeleton-svelte";
+  import { fly } from "svelte/transition";
 
   import AddIndividual from "$lib/components/AddIndividual.svelte";
   import Chart_com from "$lib/components/Chart_com.svelte";
@@ -50,8 +51,14 @@
 
   // FUNCTION TO ADD A NEW INDIVIDUAL TO THE DATA
   const addIndividual = (): void => {
-    newPerson = { name: name, selected: false, id: peopleData.length + 1 };
+    newPerson = {
+      name: name,
+      selected: false,
+      id: peopleData.length + 1,
+      group: "No group",
+    };
     peopleData.push(newPerson);
+    name = "";
     modalClose();
   };
 
@@ -102,7 +109,6 @@
 </script>
 
 <main class="mx-5">
-  <LightSwitch />
   <div class="mx-auto max-w-2xl w-full min-w-sm">
     <header
       class=" flex justify-between items-center
@@ -110,25 +116,29 @@
               bg-surface-100 dark:bg-surface-900"
     >
       <h1 class="text-4xl font-bold">Randomizer</h1>
-      <Modal
-        open={openState}
-        onOpenChange={(e) => (openState = e.open)}
-        triggerBase="btn preset-filled-primary-500"
-        contentBase="card bg-surface-100-900 p-4 space-y-4 shadow-xl max-w-2xl w-full min-w-sm"
-        backdropClasses="backdrop-blur-sm"
-      >
-        {#snippet trigger()}
-          Add Individual
-        {/snippet}
-        {#snippet content()}
-          <AddIndividual
-            {addIndividual}
-            bind:name
-            {addIndividuals}
-            {modalClose}
-          />
-        {/snippet}
-      </Modal>
+
+      <div class="flex flex-col gap-3 items-center">
+        <LightSwitch />
+        <Modal
+          open={openState}
+          onOpenChange={(e) => (openState = e.open)}
+          triggerBase="btn preset-filled-primary-500"
+          contentBase="card bg-surface-100-900 p-4 space-y-4 shadow-xl max-w-2xl w-full min-w-sm"
+          backdropClasses="backdrop-blur-sm"
+        >
+          {#snippet trigger()}
+            Add Individual
+          {/snippet}
+          {#snippet content()}
+            <AddIndividual
+              {addIndividual}
+              bind:name
+              {addIndividuals}
+              {modalClose}
+            />
+          {/snippet}
+        </Modal>
+      </div>
     </header>
     <!--    PIE CHART AND NEWLY SELECTED SECTION -->
     <section class="flex justify-between flex-wrap mt-10">
@@ -211,7 +221,7 @@
               >List of all {active_filter} Individuals</caption
             >
             <thead>
-              <tr class="font-">
+              <tr>
                 <th>ID</th>
                 <th>Name</th>
                 <th>Group</th>
@@ -221,7 +231,7 @@
               {#if active_filter == "Selected"}
                 {#each peopleData as person}
                   {#if person.selected}
-                    <tr>
+                    <tr in:fly={{ x: 200 }} out:fly={{ x: -200 }}>
                       <td>{person.id}</td>
                       <td>{person.name}</td>
                       <td>{person.group}</td>
@@ -231,7 +241,7 @@
               {:else if active_filter == "Unselected"}
                 {#each peopleData as person}
                   {#if !person.selected}
-                    <tr>
+                    <tr in:fly={{ y: 200 }} out:fly={{ y: -200 }}>
                       <td>{person.id}</td>
                       <td>{person.name}</td>
                       <td>{person.group}</td>

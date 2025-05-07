@@ -3,7 +3,7 @@
 
   let {
     addIndividual,
-    name = $bindable(""),
+    name = $bindable(),
     addIndividuals,
     modalClose,
   } = $props();
@@ -76,7 +76,7 @@
 
   //FILTER FUNCTION
   const filter_Tabs: string[] = ["Upload File", "Manually Input Data"];
-  let active_filter = $state("Upload File");
+  let active_filter = $state(filter_Tabs[1]);
 
   const changeActiveFilter = (filter: string): void => {
     active_filter = filter;
@@ -130,6 +130,7 @@
               id="name"
               placeholder="Enter Name of Individual"
               class="w-md border-2 p-2 rounded-xl my-4"
+              bind:value={name}
             />
           </div>
 
