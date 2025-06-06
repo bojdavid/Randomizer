@@ -45,7 +45,7 @@
 </script>
 
 <div
-  class="{unselectedCount == 0 ? 'hidden' : 'sm:h-64 w-full h-30'} align-left"
+  class="{unselectedCount == 0 ? 'hidden' : 'sm:h-60 w-full h-30'} align-left"
 >
   <canvas bind:this={canvas}></canvas>
 </div>

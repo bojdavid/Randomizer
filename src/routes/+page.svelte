@@ -177,90 +177,102 @@
       </div>
     </section>
     <!-- END OF PIE CHART AND NEWLY SECTION -->
-
-    <!-- RANDOM SELECTION SECTION-->
-    <section class="mt-10 flex justify-center gap-4 flex-wrap">
-      <button
-        type="button"
-        class="btn preset-filled-primary-500"
-        onclick={() => selectRandomPeople(numFreshSelection)}
-      >
-        Randomly Select
-      </button>
-
-      <input
-        type="number"
-        placeholder="No to select"
-        bind:value={numFreshSelection}
-        class="w-[100px] p-1 border border-secondary-500 rounded-lg"
-      />
-
-      <button
-        class="btn preset-filled-success-500"
-        onclick={() => downloadCSV(peopleData, "data.csv")}
-      >
-        Download Csv File
-      </button>
-
-      <button
-        class="btn preset-filled-warning-500"
-        onclick={() => resetSelection(peopleData, groups)}
-      >
-        Reset Selection
-      </button>
-    </section>
-    <!-- END OF RANDOM SELECTION -->
-
-    <!-- TABLE SECTION-->
-    <section class="mt-10">
-      <FilterTabs {changeActiveFilter} {filter_Tabs} {active_filter} />
-      <div>
-        <div class="table-wrap">
-          <table class="table caption-bottom">
-            <caption class="pt-4"
-              >List of all {active_filter} Individuals</caption
-            >
-            <thead>
-              <tr>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Group</th>
-              </tr>
-            </thead>
-            <tbody class="[&>tr]:hover:preset-tonal-primary">
-              {#if active_filter == "Selected"}
-                {#each peopleData as person}
-                  {#if person.selected}
-                    <tr in:fly={{ x: 200 }} out:fly={{ x: -200 }}>
-                      <td>{person.id}</td>
-                      <td>{person.name}</td>
-                      <td>{person.group}</td>
-                    </tr>
-                  {/if}
-                {/each}
-              {:else if active_filter == "Unselected"}
-                {#each peopleData as person}
-                  {#if !person.selected}
-                    <tr in:fly={{ y: 200 }} out:fly={{ y: -200 }}>
-                      <td>{person.id}</td>
-                      <td>{person.name}</td>
-                      <td>{person.group}</td>
-                    </tr>
-                  {/if}
-                {/each}
-              {:else}
-                {#each peopleData as person}
-                  <tr class={person.selected ? "bg-secondary-500" : ""}>
-                    <td>{person.id}</td>
-                    <td>{person.name}</td>
-                    <td>{person.group}</td>
-                  </tr>
-                {/each}
-              {/if}
-            </tbody>
-          </table>
-        </div>
+    {#if peopleData.length == 0}
+      <div class="text-center mt-10 mx-3">
+        <h1 class="text-xl sm:text-3xl text-surface-200">
+          Please Add items for random Selection
+        </h1>
+        <p class="text-surface-300 lg:w-lg mx-auto text-sm">
+          Click on add Individual to the
+          <span class="text-secondary-300"> addIndividual </span>
+          button at the top right to add people/items
+        </p>
       </div>
-    </section>
+    {:else}
+      <!-- RANDOM SELECTION SECTION-->
+      <section class="mt-10 flex justify-center gap-4 flex-wrap">
+        <button
+          type="button"
+          class="btn preset-filled-primary-500"
+          onclick={() => selectRandomPeople(numFreshSelection)}
+        >
+          Randomly Select
+        </button>
+
+        <input
+          type="number"
+          placeholder="No to select"
+          bind:value={numFreshSelection}
+          class="w-[100px] p-1 border border-secondary-500 rounded-lg"
+        />
+
+        <button
+          class="btn preset-filled-success-500"
+          onclick={() => downloadCSV(peopleData, "data.csv")}
+        >
+          Download Csv File
+        </button>
+
+        <button
+          class="btn preset-filled-warning-500"
+          onclick={() => resetSelection(peopleData, groups)}
+        >
+          Reset Selection
+        </button>
+      </section>
+      <!-- END OF RANDOM SELECTION -->
+
+      <!-- TABLE SECTION-->
+      <section class="mt-10">
+        <FilterTabs {changeActiveFilter} {filter_Tabs} {active_filter} />
+        <div>
+          <div class="table-wrap">
+            <table class="table caption-bottom">
+              <caption class="pt-4"
+                >List of all {active_filter} Individuals</caption
+              >
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Name</th>
+                  <th>Group</th>
+                </tr>
+              </thead>
+              <tbody class="[&>tr]:hover:preset-tonal-primary">
+                {#if active_filter == "Selected"}
+                  {#each peopleData as person}
+                    {#if person.selected}
+                      <tr in:fly={{ x: 200 }} out:fly={{ x: -200 }}>
+                        <td>{person.id}</td>
+                        <td>{person.name}</td>
+                        <td>{person.group}</td>
+                      </tr>
+                    {/if}
+                  {/each}
+                {:else if active_filter == "Unselected"}
+                  {#each peopleData as person}
+                    {#if !person.selected}
+                      <tr in:fly={{ y: 200 }} out:fly={{ y: -200 }}>
+                        <td>{person.id}</td>
+                        <td>{person.name}</td>
+                        <td>{person.group}</td>
+                      </tr>
+                    {/if}
+                  {/each}
+                {:else}
+                  {#each peopleData as person}
+                    <tr class={person.selected ? "bg-secondary-500" : ""}>
+                      <td>{person.id}</td>
+                      <td>{person.name}</td>
+                      <td>{person.group}</td>
+                    </tr>
+                  {/each}
+                {/if}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    {/if}
   </div>
 </main>
