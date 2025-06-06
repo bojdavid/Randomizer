@@ -65,8 +65,7 @@
       .then((text: string) => {
         //console.log("CSV file content:\n", text);
         let data = extractNameAndId(text, nameColumn, idColumn);
-        console.log(data.slice(0, 30));
-        addIndividuals(data.slice(0, 30));
+        addIndividuals(data);
         // You can now parse the CSV or do something with the text
       })
       .catch((error: Error) => {

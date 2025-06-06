@@ -261,7 +261,11 @@
                   {/each}
                 {:else}
                   {#each peopleData as person}
-                    <tr class={person.selected ? "bg-secondary-500" : ""}>
+                    <tr
+                      class="{person.selected
+                        ? 'dark:bg-secondary-800 bg-secondary-200'
+                        : ''} transition duration-300 ease-in-out"
+                    >
                       <td>{person.id}</td>
                       <td>{person.name}</td>
                       <td>{person.group}</td>
